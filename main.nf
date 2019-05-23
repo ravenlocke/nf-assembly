@@ -57,7 +57,7 @@ process exposeData {
 }
 
 process runTrimmomatic {
-	container 'ravenlocke/trimmomatic:latest'
+	container 'ravenlocke/trimmomatic:0.39'
 
 	input:
 	file fwd from fwd_read_qc
@@ -74,7 +74,7 @@ process runTrimmomatic {
 process runFastQC {
 	publishDir "${outdir}", mode: 'copy'
 
-        container 'ravenlocke/fastqc:latest'
+        container 'ravenlocke/fastqc:0.11.8'
 
         input:
         file fwd from fwd_read_analysis
@@ -92,7 +92,7 @@ process runFastQC {
 process runSpades {
 	publishDir "${outdir}", mode: 'copy'
 
-	container 'ravenlocke/spades:latest'
+	container 'ravenlocke/spades:3.13.1'
 
 	input: 
 	file fwd from fwd_read_assembly
@@ -102,7 +102,7 @@ process runSpades {
 	file "assembly" into contigs
 
 	script:
-	template "run_spades.py"
+	template "spades.py"
 
 }
 
@@ -123,7 +123,7 @@ process runProdigal {
 
 process runQuast{
 	publishDir "${outdir}", mode: 'copy'
-	container 'ravenlocke/quast:latest'
+	container 'ravenlocke/quast:5.0.2'
 
 	input:
 	file contigs from contigs
