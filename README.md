@@ -39,7 +39,7 @@ The hybrid assembly workflow can be invoked similarly by specifying a different 
 
 ```
 nextflow run ravenlocke/nf-assembly -r hybrid --fwd <filename> --rev <filename> \
-  --meta <true/false> --outdir <dirname>
+  --nanopore <filename> --meta <true/false> --outdir <dirname>
 
 # Parameters are as follows:
 #   --fwd: the name of the file with the forward reads
