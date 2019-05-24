@@ -2,6 +2,7 @@
 
 params.fwd = null
 params.rev = null
+params.nanopore = null
 params.meta = null
 params.Q = 30
 params.outdir = null
@@ -24,9 +25,12 @@ if (params.fwd == null){
 	error "--fwd is a required parameter (the location of the forward reads)"
 } else if (params.rev == null){
 	error "--rev is a required parameter (the location of the reverse reads"
+} else if (params.nanopore == null){
+	error "--nanopore is a required parameter (the location of the nanopore reads)"
 } else {
 	fwd = file( params.fwd )
 	rev = file( params.rev ) 
+	nanopore = file( params.nanopore )
 }
 
 
@@ -48,11 +52,13 @@ process exposeData {
 	output:
 	file "forward.fastq.gz" into fwd_read_qc
 	file "reverse.fastq.gz" into rev_read_qc
-	
+	file "nanopore.fastq.gz" into nanopore_reads
+
 	script:
 	"""
 	ln -s $fwd "forward.fastq.gz"
 	ln -s $rev "reverse.fastq.gz"
+	ln -s $nanopore "nanopore.fastq.gz"
 	"""
 }
 
@@ -97,6 +103,7 @@ process runSpades {
 	input: 
 	file fwd from fwd_read_assembly
 	file rev from rev_read_assembly
+	file nanopore from nanopore_reads
 
 	output:
 	file "assembly" into contigs
