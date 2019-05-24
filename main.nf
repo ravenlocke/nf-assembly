@@ -13,7 +13,7 @@ Check that the relevant parameters are present to carry out the assembly
 // Checking whether the user has identified the same as metagenomic or single-cell
 if (params.meta == true){
 	meta = 'True'
-} else if (params.eta == false){
+} else if (params.meta == false){
 	meta = 'False'
 } else {
 	error "--meta must be true or false"
