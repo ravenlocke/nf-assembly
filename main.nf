@@ -92,7 +92,7 @@ process runFastQC {
 process runSpades {
 	publishDir "${outdir}", mode: 'copy'
 
-	container 'ravenlocke/spades:3.13.1'
+	container 'djskelton/spades:3.14.1'
 
 	input: 
 	file fwd from fwd_read_assembly
