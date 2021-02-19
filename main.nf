@@ -22,7 +22,7 @@ if (params.meta == true){
 if (params.reads == null){
 	error "--fwd is a required parameter (the location of the forward reads)"
 } else {
-	reads = file( params.reads )
+	input_reads = file( params.reads )
 }
 
 
@@ -46,7 +46,7 @@ process exposeData {
 	
 	script:
 	"""
-	ln -s $reads "reads.fastq.gz"
+	ln -s $input_reads "reads.fastq.gz"
 	"""
 }
 
