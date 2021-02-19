@@ -13,7 +13,7 @@ if ${meta} == True:
 	command = [
 		'spades.py',
 		'--meta',
-		'--s',
+		'--s1',
 		"${trimmed_reads}",
 		'-o',
 		'assembly',
@@ -26,7 +26,7 @@ if ${meta} == True:
 elif ${meta} == False:
         command = [
                 'spades.py',
-                '--s',
+                '--s1',
                 "${trimmed_reads}",
                 '-o',
                 'assembly',
