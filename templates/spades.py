@@ -13,10 +13,8 @@ if ${meta} == True:
 	command = [
 		'spades.py',
 		'--meta',
-		'--pe1-1',
-		"${fwd}",
-		'--pe1-2',
-		"${rev}",
+		'--s',
+		"${trimmed_reads}",
 		'-o',
 		'assembly',
 		'-t',
@@ -28,10 +26,8 @@ if ${meta} == True:
 elif ${meta} == False:
         command = [
                 'spades.py',
-                '--pe1-1',
-                "${fwd}",
-                '--pe1-2',
-                "${rev}",
+                '--s',
+                "${trimmed_reads}",
                 '-o',
                 'assembly',
                 '-t',

@@ -7,9 +7,7 @@ import multiprocessing
 
 ncores = str( multiprocessing.cpu_count() )
 
-command = ['fastqc', '-t', ncores, "${fwd}"]
-subprocess.call(command)
-command = ['fastqc', '-t', ncores, "${rev}"]
+command = ['fastqc', '-t', ncores, "${trimmed_reads}"]
 subprocess.call(command)
 
 os.mkdir('fastqc_results')

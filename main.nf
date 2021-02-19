@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
-params.fwd = null
-params.rev = null
+params.reads = null
 params.meta = null
 params.Q = 30
 params.outdir = null
@@ -20,13 +19,10 @@ if (params.meta == true){
 }
 
 // Checking whether the user has indicated the location of the forward / reverse sequences
-if (params.fwd == null){
+if (params.reads == null){
 	error "--fwd is a required parameter (the location of the forward reads)"
-} else if (params.rev == null){
-	error "--rev is a required parameter (the location of the reverse reads"
 } else {
-	fwd = file( params.fwd )
-	rev = file( params.rev ) 
+	reads = file( params.reads )
 }
 
 
@@ -46,13 +42,11 @@ Run the Nextflow workflow
 // This process exposes the forward and reverse reads to the rest of the workflow.
 process exposeData {
 	output:
-	file "forward.fastq.gz" into fwd_read_qc
-	file "reverse.fastq.gz" into rev_read_qc
+	file "reads.fastq.gz" into reads
 	
 	script:
 	"""
-	ln -s $fwd "forward.fastq.gz"
-	ln -s $rev "reverse.fastq.gz"
+	ln -s $reads "reads.fastq.gz"
 	"""
 }
 
@@ -60,12 +54,11 @@ process runTrimmomatic {
 	container 'ravenlocke/trimmomatic:0.39'
 
 	input:
-	file fwd from fwd_read_qc
-	file rev from rev_read_qc
+	file reads_untrimmed from reads
 
 	output:
-	file "forward_paired.fastq.gz" into fwd_read_assembly, fwd_read_analysis
-	file "reverse_paired.fastq.gz" into rev_read_assembly, rev_read_analysis
+	file "reads_clean.fastq.gz" into reads_trimmed_assembly, reads_trimmed_qc
+ 
 
 	script:
 	template "trimmomatic.py"
@@ -77,8 +70,7 @@ process runFastQC {
         container 'ravenlocke/fastqc:0.11.8'
 
         input:
-        file fwd from fwd_read_analysis
-        file rev from rev_read_analysis
+        file trimmed_reads from reads_trimmed_qc
 
 	output:
 	file "fastqc_results" into fastqc_results
@@ -95,8 +87,7 @@ process runSpades {
 	container 'djskelton/spades:3.14.1'
 
 	input: 
-	file fwd from fwd_read_assembly
-	file rev from rev_read_assembly
+	file trimmed_reads from reads_trimmed_assembly
 
 	output:
 	file "assembly" into contigs
@@ -119,22 +110,5 @@ process runProdigal {
 
 	script:
 	template "prodigal.py"
-}
-
-process runQuast{
-	publishDir "${outdir}", mode: 'copy'
-	container 'ravenlocke/quast:5.0.2'
-
-	input:
-	file contigs from contigs
-	file fwd from fwd_read_assembly
-	file rev from rev_read_assembly
-
-	output:
-	file "quast_results" into quast_results
-	
-	script:
-	template "quast.py"
-
 }
 

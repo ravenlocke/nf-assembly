@@ -8,15 +8,11 @@ nproc = str( multiprocessing.cpu_count() )
 
 command = [
 	'trimmomatic',
-	'PE',
+	'SE',
 	'-threads',
 	nproc,
-	"${fwd}",
-	"${rev}",
-	'forward_paired.fastq.gz',
-	'forward_unpaired.fastq.gz',
-	'reverse_paired.fastq.gz',
-	'reverse_unpaired.fastq.gz',
+	"${reads_untrimmed}",
+	'reads_clean.fastq.gz',
 	'SLIDINGWINDOW:4:${params.Q}',
 	'LEADING:${params.Q}',
 	'TRAILING:${params.Q}',
