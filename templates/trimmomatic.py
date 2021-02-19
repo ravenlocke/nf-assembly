@@ -11,6 +11,12 @@ command = [
 	'SE',
 	'-threads',
 	nproc,
+]
+
+if "${params.phred}" != "null":
+    command += ["-phred${params.phred}"]
+
+command += [
 	"${reads_untrimmed}",
 	'reads_clean.fastq.gz',
 	'SLIDINGWINDOW:4:${params.Q}',

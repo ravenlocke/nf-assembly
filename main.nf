@@ -4,6 +4,7 @@ params.reads = null
 params.meta = null
 params.Q = 30
 params.outdir = null
+params.phred = null
 
 /*
 Check that the relevant parameters are present to carry out the assembly
