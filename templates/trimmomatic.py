@@ -20,5 +20,3 @@ command = [
 	]
 
 subprocess.call(command)
-os.remove( 'forward_unpaired.fastq.gz' )
-os.remove( 'reverse_unpaired.fastq.gz' )
